@@ -39,7 +39,7 @@ public class JBus
        */
        
        //CS 2
-       Bus testBus = CreateBus();
+       Bus testBus = createBus();
        System.out.println(testBus.name);
        System.out.println(testBus.facility);
        System.out.println(testBus.price.price);
@@ -103,7 +103,7 @@ public class JBus
         return (int)(price * numberOfSeat + getAdminFee(price *numberOfSeat));
     }
     
-    public static Bus CreateBus ()
+    public static Bus createBus ()
     {
         Price price = new Price(750000,5);
         Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25);
