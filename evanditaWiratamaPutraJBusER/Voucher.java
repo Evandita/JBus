@@ -1,6 +1,6 @@
 package evanditaWiratamaPutraJBusER;
 
-public class Voucher
+public class Voucher extends Serializable
 {
     public String name;
     private boolean used;
@@ -9,8 +9,9 @@ public class Voucher
     public int code;
     public Type type;
     
-    public Voucher (String name, int code, Type type, double minimum, double cut)
+    public Voucher (int id, String name, int code, Type type, double minimum, double cut)
     {
+        super(id);
         this.name = name;
         this.code = code;
         this.type = type;
@@ -51,6 +52,10 @@ public class Voucher
         }
         else if (type == Type.REBATE)
         {
+            if (cut > price.price)
+            {
+                return 0;
+            }
             return price.price - cut;
         }
         else return 0;
