@@ -35,5 +35,10 @@ public class Rating
     {
         return total;
     }
+    
+    public String toString ()
+    {
+        return "\nClass: Rating\n" + "count: " + count + "\ntotal: " + total;
+    }
 
 }

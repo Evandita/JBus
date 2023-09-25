@@ -24,9 +24,9 @@ public class Payment extends Invoice
         this.busSeat = busSeat;
     }
     
-    public String print ()
+    public String toString ()
     {
-        return "id: " + id + "\nbuyerId: " + buyerId + "\nrenterId: " + renterId + "\ntime: " + time + "\nbusId: " + busId + "\ndepartureDate: " + departureDate + "\nbusSeat: " + busSeat;
+        return "\nClass: Payment\n" + "id: " + id + "\nbuyerId: " + buyerId + "\nrenterId: " + renterId + "\ntime: " + time + "\nbusId: " + busId + "\ndepartureDate: " + departureDate + "\nbusSeat: " + busSeat;
     }
     
     public int getBusId ()

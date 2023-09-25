@@ -33,6 +33,10 @@ public class Price
         // this.discount = 0;
     }
     
+    public String toString ()
+    {
+        return "\nClass: Price\n" + "price: " + price + "\nrebate: " + rebate;
+    }
     /*
     private double getDiscountedPrice ()
     {
