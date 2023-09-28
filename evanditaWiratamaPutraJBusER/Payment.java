@@ -9,7 +9,7 @@ public class Payment extends Invoice
     
     public Payment (int id, int buyerId, int renterId, String time, int busId, String departureDate, String busSeat)
     {
-        super(id, buyerId, renterId, time);
+        super(id, buyerId, renterId);
         this.busId = busId;
         this.departureDate = departureDate;
         this.busSeat = busSeat;
@@ -18,7 +18,7 @@ public class Payment extends Invoice
     
     public Payment (int id, Account buyer, Renter renter, String time, int busId, String departureDate, String busSeat)
     {
-        super(id, buyer, renter, time);
+        super(id, buyer, renter);
         this.busId = busId;
         this.departureDate = departureDate;
         this.busSeat = busSeat;
