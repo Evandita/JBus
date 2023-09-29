@@ -1,9 +1,11 @@
 package evanditaWiratamaPutraJBusER;
+import java.text.*;
+import java.util.*;
 
 
 public class JBus
 {
-    public static void main (String[] args)
+    public static void main (String[] args) throws ParseException
     {
         /*        
         System.out.println(getBusId());
@@ -91,6 +93,28 @@ public class JBus
        System.out.println(Validate.filter(unfilteredArray, 12000, true));
        System.out.println("Above 10000.0");
        System.out.println(Validate.filter(unfilteredArray, 10000, false));
+
+       
+       Bus testBus = createBus();
+       
+       //Payment
+       Payment testPayment = new Payment(1, 1, 1, testBus.id, "S1");
+       System.out.println(testPayment.getDepartureInfo());
+       System.out.println(testPayment.getTime());
+       
+       // Tes Schedule
+       Calendar schedule1 = Calendar.getInstance();
+       testBus.addSchedule(schedule1);
+       Calendar schedule2 = Calendar.getInstance();
+       schedule2.add(Calendar.DAY_OF_MONTH, 3);
+       testBus.addSchedule(schedule2);
+       
+       for (Schedule s: testBus.schedules)
+       {
+           testBus.printSchedule(s);
+       }
+       
+       
     }
     
     public static int getBusId ()
@@ -148,12 +172,16 @@ public class JBus
     {
         return (int)(price * numberOfSeat + getAdminFee(price *numberOfSeat));
     }
-    /*
+    
     public static Bus createBus ()
     {
-        Price price = new Price(750000,5);
-        Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25);
-        return bus;
+        
+       Price testPrice = new Price(100000, 20000);
+       Station testDeparture = new Station(2, "Depok Terminal", City.DEPOK, "JL. Margonda Raya");
+       Station testArrival = new Station(3, "Halte UI", City.JAKARTA, "Universitas Indonesia");
+       Bus testBus = new Bus(1, "Busway", Facility.AC, testPrice, 50, BusType.REGULER, City.DEPOK, testDeparture, testArrival);
+        
+       return testBus;
     }
-    */
+    
 }

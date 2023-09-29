@@ -1,4 +1,6 @@
 package evanditaWiratamaPutraJBusER;
+import java.util.*;
+import java.text.*;
 
 
 public class Bus extends Serializable
@@ -11,6 +13,8 @@ public class Bus extends Serializable
     public Station arrival;
     public BusType busType;
     public City city;
+    public List<Schedule> schedules;
+    
 
     public Bus (int id, String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
     {
@@ -23,11 +27,39 @@ public class Bus extends Serializable
         this.arrival = arrival;
         this.busType = busType;
         this.city = city;
+        schedules = new ArrayList<Schedule>();
+        
     }
     
     public String toString ()
     {
         return "\nClass: Bus\n" + "id: " + id + "\ncapacity: " + capacity + "\nfacility: " + facility + "\nname: " + name + "\nprice: " + price + "\ndeparture: " + departure + "\narrival: " + arrival + "\nbusType: " + busType + "\ncity: " + city;
+    }
+    
+    public void addSchedule (Calendar calendar)
+    {
+        schedules.add(new Schedule(calendar, capacity));
+    }
+    
+    public void printSchedule (Schedule schedule)
+    {
+        SimpleDateFormat SDFormat = new SimpleDateFormat("'Tanggal Keberangkatan:' MMMM dd, yyyy HH:mm:ss");
+        System.out.println(SDFormat.format(schedule.departureSchedule.getTime()));
+        System.out.println("Tanggal keberangkatan dana ketersediaan kursinya: ");
+        int cnt = 0;
+        for (Map.Entry<String, Boolean> seat: schedule.seatAvailability.entrySet())
+        {
+            if (cnt == 4)
+            {
+                cnt = 0;
+                System.out.print("\n");
+            }
+            String key = seat.getKey();
+            Boolean value = seat.getValue();
+            System.out.print(key + ":" + value + "\t");
+            cnt++;
+        }
+        System.out.print("\n");
     }
 
 }
