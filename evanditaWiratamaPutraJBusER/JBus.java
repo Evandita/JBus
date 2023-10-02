@@ -121,8 +121,8 @@ public class JBus
     Bus b = createBus();
     Timestamp schedule1 = Timestamp.valueOf("2023-7-18 15:00:00");
     Timestamp schedule2 = Timestamp.valueOf("2023-7-20 12:00:00");
-    b.addSchedule(schedule1, 12);
-    b.addSchedule(schedule2, 12);
+    b.addSchedule(schedule1);
+    b.addSchedule(schedule2);
     b.schedules.forEach(schedule ->
     {
         try
@@ -224,15 +224,10 @@ public class JBus
         return (int)(price * numberOfSeat + getAdminFee(price *numberOfSeat));
     }
     
-    public static Bus createBus ()
-    {
-        
-       Price testPrice = new Price(100000, 20000);
-       Station testDeparture = new Station(2, "Depok Terminal", City.DEPOK, "JL. Margonda Raya");
-       Station testArrival = new Station(3, "Halte UI", City.JAKARTA, "Universitas Indonesia");
-       Bus testBus = new Bus(1, "Busway", Facility.AC, testPrice, 50, BusType.REGULER, City.DEPOK, testDeparture, testArrival);
-        
-       return testBus;
+        public static Bus createBus() {
+        Price price = new Price(750000, 5);
+        Bus bus = new Bus(1, "Netlab Bus", Facility.LUNCH, price, 25, BusType.REGULER, City.BANDUNG, new Station(1, "Depok Terminal", City.DEPOK, "Jl. Margonda Raya"), new Station(2, "Halte UI", City.JAKARTA, "Universitas Indonesia"));
+        return bus;
     }
     
 }
