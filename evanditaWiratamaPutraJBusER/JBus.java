@@ -1,11 +1,13 @@
 package evanditaWiratamaPutraJBusER;
 import java.text.*;
+import java.text.ParseException;
 import java.util.*;
-
+import java.sql.Timestamp;
 
 public class JBus
 {
-    public static void main (String[] args) throws ParseException
+    public static void main (String[] args)
+    throws ParseException
     {
         /*        
         System.out.println(getBusId());
@@ -74,7 +76,7 @@ public class JBus
        System.out.println(testPrice);
        System.out.println(testRating);
        */
-      
+       /*
        Price[] unfilteredArray = new Price[5];
        for (int i = 0;i < unfilteredArray.length;i++)
        {
@@ -114,7 +116,56 @@ public class JBus
            testBus.printSchedule(s);
        }
        
-       
+       */
+      
+    Bus b = createBus();
+    Timestamp schedule1 = Timestamp.valueOf("2023-7-18 15:00:00");
+    Timestamp schedule2 = Timestamp.valueOf("2023-7-20 12:00:00");
+    b.addSchedule(schedule1, 12);
+    b.addSchedule(schedule2, 12);
+    b.schedules.forEach(schedule ->
+    {
+        try
+        {
+             schedule.printSchedule();
+        }
+        catch (ParseException pe)
+        {
+            pe.printStackTrace();
+        }
+    });
+
+    // Invalid date
+    Timestamp t1 = Timestamp.valueOf("2023-7-19 15:00:00");
+    System.out.println("Make booking at July 19, 2023 15:00:00 Seat ER12");
+    System.out.println(Payment.makeBooking(t1, "ER12", b));
+    // Valid date, invalid seat
+    Timestamp t2 = Timestamp.valueOf("2023-7-18 15:00:00");
+    System.out.println("\nMake booking at July 18, 2023 15:00:00 Seat ER20");
+    System.out.println(Payment.makeBooking(t2, "ER20", b));
+    // Valid date, valid seat
+    System.out.println("\nMake booking at July 18, 2023 15:00:00 Seat ER07");
+    System.out.println(Payment.makeBooking(t2, "ER07", b));
+    Timestamp t3 = Timestamp.valueOf("2023-7-20 12:00:00");
+    System.out.println("\nMake booking at July 20, 2023 12:00:00 Seat ER01");
+    
+    System.out.println(Payment.makeBooking(t3, "ER01", b));
+    System.out.println("\nMake booking at July 20, 2023 12:00:00 Seat ER01 again");
+    System.out.println(Payment.makeBooking(t3, "ER01", b));
+    // Check if the data changed
+    System.out.println("\nUpdated Schedule\n");
+    b.schedules.forEach(schedule ->
+    {
+        try
+        {
+             schedule.printSchedule();
+        }
+        catch (ParseException pe)
+        {
+            pe.printStackTrace();
+        }
+    });
+
     }
     
     public static int getBusId ()

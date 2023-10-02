@@ -1,9 +1,9 @@
 package evanditaWiratamaPutraJBusER;
 import java.util.*;
 import java.text.*;
+import java.sql.Timestamp;
 
-
-public class Bus extends Serializable
+public class Bus extends Serializable implements FileParser
 {
     public int capacity;
     public Facility facility;
@@ -15,7 +15,16 @@ public class Bus extends Serializable
     public City city;
     public List<Schedule> schedules;
     
-
+    public Object write ()
+    {
+        return 0;
+    }
+    
+    public boolean read (String content)
+    {
+        return true;
+    }
+    
     public Bus (int id, String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
     {
         super(id);
@@ -30,18 +39,21 @@ public class Bus extends Serializable
         schedules = new ArrayList<Schedule>();
         
     }
+
     
     public String toString ()
     {
         return "\nClass: Bus\n" + "id: " + id + "\ncapacity: " + capacity + "\nfacility: " + facility + "\nname: " + name + "\nprice: " + price + "\ndeparture: " + departure + "\narrival: " + arrival + "\nbusType: " + busType + "\ncity: " + city;
     }
     
-    public void addSchedule (Calendar calendar)
+    public void addSchedule (Timestamp departureDate, int capacity)
     {
-        schedules.add(new Schedule(calendar, capacity));
+        schedules.add(new Schedule(departureDate, capacity));
     }
     
+    /*
     public void printSchedule (Schedule schedule)
+        throws ParseException
     {
         SimpleDateFormat SDFormat = new SimpleDateFormat("'Tanggal Keberangkatan:' MMMM dd, yyyy HH:mm:ss");
         System.out.println(SDFormat.format(schedule.departureSchedule.getTime()));
@@ -61,5 +73,6 @@ public class Bus extends Serializable
         }
         System.out.print("\n");
     }
+    */
 
 }
