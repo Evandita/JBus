@@ -117,7 +117,8 @@ public class JBus
        }
        
        */
-      
+      //PT 4
+        /*
     Bus b = createBus();
     Timestamp schedule1 = Timestamp.valueOf("2023-7-18 15:00:00");
     Timestamp schedule2 = Timestamp.valueOf("2023-7-20 12:00:00");
@@ -166,6 +167,8 @@ public class JBus
         }
     });
 
+         */
+    System.out.println("Hello from IntelliJ!");
     }
     
     public static int getBusId ()
