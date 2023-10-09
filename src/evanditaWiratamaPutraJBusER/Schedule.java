@@ -1,7 +1,6 @@
 package evanditaWiratamaPutraJBusER;
 import java.sql.Timestamp;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.text.*;
 
 public class Schedule
@@ -27,17 +26,6 @@ public class Schedule
     
     public boolean isSeatAvailable (String seat)
     {
-        /*
-        System.out.println("Masuk sini dengan seat: " + seat);
-        for (Map.Entry<String, Boolean> a: seatAvailability.entrySet())
-        {
-
-            String key = a.getKey();
-            Boolean value = a.getValue();
-            System.out.print(key + ":" + value);
-
-        }
-        */
         if (seatAvailability.containsKey(seat) && seatAvailability.get(seat))
         {
             return true;
@@ -47,10 +35,34 @@ public class Schedule
             return false;
         }
     }
+
+    public boolean isSeatAvailable (List<String> seat)
+    {
+        boolean ret = false;
+        for (String element: seat){
+            if (seatAvailability.containsKey(element) && seatAvailability.get(element))
+            {
+                ret = true;
+            }
+            else
+            {
+                ret = false;
+                break;
+            }
+        }
+    return ret;
+    }
     
     public void bookSeat (String seat)
     {
         seatAvailability.put(seat, false);
+    }
+
+    public void bookSeat (List<String> seat)
+    {
+        for (String element: seat) {
+            seatAvailability.put(element, false);
+        }
     }
     
     public void printSchedule () 
@@ -79,5 +91,11 @@ public class Schedule
             currentSeat ++;
         }
         System.out.println("\n");
+    }
+
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        String formattedDepartureSchedule = dateFormat.format(this.departureSchedule.getTime());
+        return "Schedule\t: " + formattedDepartureSchedule + "\nOccupied\t: " + Algorithm.count(seatAvailability.values().iterator(), false) + "/" + seatAvailability.size();
     }
 }

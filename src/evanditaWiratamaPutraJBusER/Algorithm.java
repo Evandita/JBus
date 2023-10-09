@@ -5,6 +5,37 @@ import java.util.*;
 
 
 public class Algorithm {
+
+    private Algorithm () {
+
+    }
+
+    //PAGINATE
+    public static <T> List<T> paginate(T[] array, int page, int pageSize, Predicate<T> pred) {
+        final Iterator<T> it = Arrays.stream(array).iterator();
+        return paginate(it, page, pageSize, pred);
+    }
+
+    public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> pred) {
+        final Iterator<T> it = iterable.iterator();
+        return paginate(it, page, pageSize, pred);
+    }
+
+    public static <T> List<T> paginate(Iterator<T> iterator, int page, int pageSize, Predicate<T> pred) {
+        List <T> arrlist = new ArrayList<T>();
+        int cnt = 1;
+        while(iterator.hasNext()) {
+            T current = iterator.next();
+            if (pred.predicate(current)) {
+                if (cnt > page*pageSize && cnt <= (page + 1)*pageSize ) {
+                    arrlist.add(current);
+                }
+            }
+            cnt++;
+        }
+        return arrlist;
+    }
+
     //COLLECT
     public static <T> List<T> collect(T[] array, T value) {
         final Iterator<T> it = Arrays.stream(array).iterator();
@@ -143,6 +174,7 @@ public class Algorithm {
 
     public static <T> boolean exists(Iterator<T> iterator, Predicate<T> pred) {
         while (iterator.hasNext()) {
+
             T current = iterator.next();
             if (pred.predicate(current))
                 return true;

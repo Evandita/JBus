@@ -50,7 +50,7 @@ public class Payment extends Invoice
         SimpleDateFormat SDFormat = new SimpleDateFormat("'Time:' MMMM dd, yyyy HH:mm:ss");
         return SDFormat.format(time.getTime());
     }
-    
+    /*
     public static boolean isAvailable (Timestamp departureSchedule, String seat, Bus bus)
     {
         for (int i = 0;i < bus.schedules.size();i++)
@@ -64,7 +64,7 @@ public class Payment extends Invoice
                     //System.out.println(bus.schedules.get(i));
                     return true;
                 }
-                /*
+                //
                 for (Map.Entry<String, Boolean> j: i.seatAvailability.entrySet())
                 {
                     String key = j.getKey();
@@ -74,15 +74,59 @@ public class Payment extends Invoice
                         return true;
                     }
                 }
-                */
+                //
             }
         }
         return false;
     }
+    */
+
+    public static Schedule availableSchedule (Timestamp departureSchedule, String seat, Bus bus) {
+        Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
+        Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
+        if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se)){
+            return Algorithm.find(bus.schedules, sc);
+        }
+        return null;
+    }
+
+    public static Schedule availableSchedule (Timestamp departureSchedule, List<String> seat, Bus bus) {
+        Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
+        Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
+        if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se)){
+            return Algorithm.find(bus.schedules, sc);
+        }
+        return null;
+    }
     
     public static boolean makeBooking (Timestamp departureSchedule, String seat, Bus bus)
     {
-        if (isAvailable(departureSchedule, seat, bus))
+        Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
+        Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
+        //if (isAvailable(departureSchedule, seat, bus))
+        if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se))
+        {
+            for (int i = 0;i < bus.schedules.size();i++)
+            {
+                if (bus.schedules.get(i).departureSchedule.equals(departureSchedule))
+                {
+                    //System.out.println(bus.schedules.get(i) +"2");
+                    Schedule tmp = bus.schedules.get(i);
+                    tmp.bookSeat(seat);
+                    bus.schedules.set(i, tmp);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean makeBooking (Timestamp departureSchedule, List<String> seat, Bus bus)
+    {
+        Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
+        Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
+        //if (isAvailable(departureSchedule, seat, bus))
+        if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se))
         {
             for (int i = 0;i < bus.schedules.size();i++)
             {
