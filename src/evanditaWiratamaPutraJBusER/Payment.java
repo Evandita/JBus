@@ -8,8 +8,8 @@ public class Payment extends Invoice
     private int busId;
     public Timestamp departureDate;
     public String busSeat;
-    
-    
+
+
     public Payment (int buyerId, int renterId, int busId, String busSeat, Timestamp departureDate)
     {
         super(buyerId, renterId);
@@ -17,8 +17,8 @@ public class Payment extends Invoice
         this.departureDate = departureDate;
         this.busSeat = busSeat;
     }
-    
-    
+
+
     public Payment (Account buyer, Renter renter, int busId, String busSeat, Timestamp departureDate)
     {
         super(buyer, renter);
@@ -36,16 +36,16 @@ public class Payment extends Invoice
     {
         return busId;
     }
-    
+
     public String getDepartureInfo ()
-        throws ParseException
+            throws ParseException
     {
         SimpleDateFormat SDFormat = new SimpleDateFormat("'Departure Date:' MMMM dd, yyyy HH:mm:ss");
         return SDFormat.format(departureDate.getTime()) + "\nPayment Id: " + id + "\nBuyer Id: " + buyerId +  "\nRenter Id: " + renterId + "\nBus Id: " + busId + "\nBus Seat: " + busSeat;
     }
-    
+
     public String getTime ()
-        throws ParseException
+            throws ParseException
     {
         SimpleDateFormat SDFormat = new SimpleDateFormat("'Time:' MMMM dd, yyyy HH:mm:ss");
         return SDFormat.format(time.getTime());
@@ -55,10 +55,10 @@ public class Payment extends Invoice
     {
         for (int i = 0;i < bus.schedules.size();i++)
         {
-      
+
             if (bus.schedules.get(i).departureSchedule.equals(departureSchedule))
             {
-                
+
                 if (bus.schedules.get(i).isSeatAvailable(seat) == true)
                 {
                     //System.out.println(bus.schedules.get(i));
@@ -81,26 +81,28 @@ public class Payment extends Invoice
     }
     */
 
-    public static Schedule availableSchedule (Timestamp departureSchedule, String seat, Bus bus) {
-        Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
-        Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
-        if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se)){
-            return Algorithm.find(bus.schedules, sc);
-        }
-        return null;
+    public static Schedule availableSchedule (Timestamp departureSchedule, String seat, Bus bus) throws ParseException {
+        Predicate<Schedule> s = (val) -> val.departureSchedule.equals(departureSchedule) && val.isSeatAvailable(seat);
+        return Algorithm.find(bus.schedules, s);
     }
 
     public static Schedule availableSchedule (Timestamp departureSchedule, List<String> seat, Bus bus) {
-        Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
-        Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
-        if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se)){
-            return Algorithm.find(bus.schedules, sc);
-        }
-        return null;
+        Predicate<Schedule> s = (val) -> val.departureSchedule.equals(departureSchedule) && val.isSeatAvailable(seat);
+        return Algorithm.find(bus.schedules, s);
     }
-    
-    public static boolean makeBooking (Timestamp departureSchedule, String seat, Bus bus)
-    {
+
+    public static boolean makeBooking (Timestamp departureSchedule, String seat, Bus bus) throws ParseException {
+        Schedule s = availableSchedule(departureSchedule, seat, bus);
+
+        if (s != null) {
+
+            s.bookSeat(seat);
+            return true;
+        }
+        else {
+            return false;
+        }
+        /*
         Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
         Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
         //if (isAvailable(departureSchedule, seat, bus))
@@ -119,15 +121,28 @@ public class Payment extends Invoice
             }
         }
         return false;
+
+         */
     }
 
     public static boolean makeBooking (Timestamp departureSchedule, List<String> seat, Bus bus)
     {
+        Schedule s = availableSchedule(departureSchedule, seat, bus);
+        if (s != null) {
+            s.bookSeat(seat);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+        /*
         Predicate<Schedule> sc = (val) -> val.departureSchedule.equals(departureSchedule);
         Predicate<Schedule> se = (val) -> val.isSeatAvailable(seat);
         //if (isAvailable(departureSchedule, seat, bus))
         if (Algorithm.exists(bus.schedules, sc) && Algorithm.exists(bus.schedules, se))
         {
+
             for (int i = 0;i < bus.schedules.size();i++)
             {
                 if (bus.schedules.get(i).departureSchedule.equals(departureSchedule))
@@ -141,6 +156,7 @@ public class Payment extends Invoice
             }
         }
         return false;
+        */
+
     }
 }
-

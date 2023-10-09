@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 public class JBus
 {
     public static void main (String[] args)
-    throws ParseException
+            throws ParseException
     {
         /*        
         System.out.println(getBusId());
@@ -41,8 +41,8 @@ public class JBus
        System.out.println(getTotalPrice(5000,1));
        System.out.println(getTotalPrice(0,2));
        */
-       
-       //CS 2
+
+        //CS 2
        /*
        Bus testBus = createBus();
        System.out.println(testBus.name);
@@ -50,8 +50,8 @@ public class JBus
        System.out.println(testBus.price.price);
        System.out.println(testBus.capacity);
        */
-      
-       //CS 3
+
+        //CS 3
        /*
        Payment testPayment = new Payment(1, 1, 1, "A", 1, "A", "A");
        Invoice testInvoice = new Invoice(2, 2, 2, "B");
@@ -60,8 +60,8 @@ public class JBus
        System.out.println(testInvoice.print());
        System.out.println(testStation.print());
        */
-      
-       //PT 3
+
+        //PT 3
        /*
        Review testReview = new Review(1, "23 August 2023", "Bad Quality");
        Price testPrice = new Price(100000, 20000);
@@ -117,7 +117,7 @@ public class JBus
        }
        
        */
-      //PT 4
+        //PT 4
         /*
     Bus b = createBus();
     Timestamp schedule1 = Timestamp.valueOf("2023-7-18 15:00:00");
@@ -292,17 +292,17 @@ public class JBus
     {
         return 0;
     }
-    
+
     public static String getBusName ()
     {
         return "Bus";
     }
-    
+
     public static boolean isDiscount ()
     {
         return true;
     }
-    
+
     public static float getDiscountPercentage (int beforeDiscount, int afterDiscount)
     {
         if (afterDiscount >= beforeDiscount){
@@ -312,15 +312,15 @@ public class JBus
             return (float)((beforeDiscount - afterDiscount))/beforeDiscount * 100;
         }
     }
-    
+
     public static int getDiscountedPrice (int price, float discountPercentage)
     {
         if (discountPercentage > 100){
             discountPercentage = 100;
-        }      
+        }
         return (int)((100-discountPercentage)/100 * price);
     }
-    
+
     public static int getOriginalPrice (int discountedPrice, float discountPercentage)
     {
         if (discountPercentage > 100){
@@ -328,17 +328,17 @@ public class JBus
         }
         return (int)(discountedPrice/(100-discountPercentage) * 100);
     }
-    
+
     public static float getAdminFeePercentage ()
     {
         return (float)(0.05);
     }
-    
+
     public static int getAdminFee (int price)
     {
         return (int)(getAdminFeePercentage() * price);
     }
-    
+
     public static int getTotalPrice (int price,int numberOfSeat)
     {
         return (int)(price * numberOfSeat + getAdminFee(price *numberOfSeat));
@@ -349,5 +349,5 @@ public class JBus
         Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25, BusType.REGULER, City.BANDUNG, new Station("Depok Terminal", City.DEPOK, "Jl. Margonda Raya"), new Station("Halte UI", City.JAKARTA, "Universitas Indonesia"));
         return bus;
     }
-    
+
 }
