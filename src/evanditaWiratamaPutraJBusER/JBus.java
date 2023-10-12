@@ -1,8 +1,12 @@
 package evanditaWiratamaPutraJBusER;
 import java.text.*;
-import java.text.ParseException;
 import java.util.*;
-import java.sql.Timestamp;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+
 
 public class JBus
 {
@@ -211,6 +215,7 @@ public class JBus
 
         // PT Modul 5
         // Tes Pagination
+        /*
         Bus b = createBus();
         List<Timestamp> listOfSchedules = new ArrayList<>();
         listOfSchedules.add(Timestamp.valueOf("2023-7-18 15:00:00"));
@@ -250,6 +255,23 @@ public class JBus
         // check if the data changed
         System.out.println("\nUpdated Schedule");
         Algorithm.paginate(b.schedules, 0, 4, t-> true).forEach(System.out::println);
+        */
+
+        //TP Modul 6
+
+        String filepath = "C:\\Users\\Evandita\\Documents\\Tugas Kuliah\\Semester 3\\OOP 02\\Praktikum\\Pre CS\\Modul 1\\JBus\\data\\station.json";
+        Gson gson = new Gson();
+
+        try {
+            BufferedReader buffer = new BufferedReader(new FileReader(filepath));
+            List<Station> stationjson = gson.fromJson(buffer, new TypeToken<List<Station>>() {}.getType());
+            stationjson.forEach(e -> System.out.println(e.toString()));
+            System.out.println();
+            buffer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void testExist(Integer[] t) {
