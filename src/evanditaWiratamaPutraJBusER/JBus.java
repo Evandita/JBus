@@ -1,6 +1,7 @@
 package evanditaWiratamaPutraJBusER;
 import java.text.*;
 import java.util.*;
+import java.sql.Timestamp;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -257,6 +258,7 @@ public class JBus
         Algorithm.paginate(b.schedules, 0, 4, t-> true).forEach(System.out::println);
         */
 
+        /*
         //TP Modul 6
 
         String filepath = "C:\\Users\\Evandita\\Documents\\Tugas Kuliah\\Semester 3\\OOP 02\\Praktikum\\Pre CS\\Modul 1\\JBus\\data\\station.json";
@@ -272,7 +274,87 @@ public class JBus
         catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
+
+
+        //CS Modul 6
+        try{
+            String filepath = "C:\\Users\\Evandita\\Documents\\Tugas Kuliah\\Semester 3\\OOP 02\\Praktikum\\Pre CS\\Modul 1\\JBus\\data\\buses_CS.json";
+            JsonTable<Bus> busList = new JsonTable<> (Bus.class, filepath);
+            List<Bus> filteredBus = filterByDepartureAndArrival(busList, City.JAKARTA, City.SURABAYA,0,3);
+            //Bus filteredBusId = filterBusId(busList, 155);
+            //System.out.println(filteredBusId.toString());
+            filteredBus.forEach(bus->System.out.println(bus.toString()));
+            /*
+            //Tes Duplikat
+            Bus b =  createBus();
+            b.addSchedule(Timestamp.valueOf("2023-7-18 15:00:00"));
+            b.addSchedule(Timestamp.valueOf("2023-7-18 15:00:00"));
+            */
+        }
+        catch (Throwable t){
+            t.printStackTrace();
+        }
+
     }
+
+    public static List<Bus> filterByDeparture(List<Bus> buses, City departure, int page, int pageSize)
+    {
+        try {
+
+            Predicate<Bus> s = (val) -> val.departure.city.equals(departure);
+            List<Bus> filteredBus = Algorithm.collect(buses, s);
+            return Algorithm.paginate(filteredBus,page, pageSize, t->true);
+        }
+        catch (Throwable t){
+            t.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Bus> filterByPrice(List<Bus> buses, int min, int max)
+    {
+        try {
+
+            Predicate<Bus> s = (val) -> val.price.price >= min && val.price.price <= max;
+            List<Bus> filteredBus = Algorithm.collect(buses, s);
+            return filteredBus;
+        }
+        catch (Throwable t){
+            t.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Bus> filterByDepartureAndArrival(List<Bus> buses,City departure, City arrival, int page, int pageSize)
+    {
+        try {
+
+            Predicate<Bus> s = (val) -> val.departure.city.equals(departure) && val.arrival.city.equals(arrival);
+            List<Bus> filteredBus = Algorithm.collect(buses, s);
+            return Algorithm.paginate(filteredBus,page, pageSize, t->true);
+        }
+        catch (Throwable t){
+            t.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Bus filterBusId(List<Bus> buses,int id)
+    {
+        try {
+
+            Predicate<Bus> s = (val) -> val.id == id;
+            Bus filteredBus = Algorithm.find(buses, s);
+            return filteredBus;
+        }
+        catch (Throwable t){
+            t.printStackTrace();
+            return null;
+        }
+    }
+
 
     private static void testExist(Integer[] t) {
         int valueToCheck = 67;

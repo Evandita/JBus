@@ -1,6 +1,6 @@
 package evanditaWiratamaPutraJBusER;
 
-public class Voucher extends Serializable implements FileParser
+public class Voucher extends Serializable
 {
     public String name;
     private boolean used;
@@ -8,15 +8,7 @@ public class Voucher extends Serializable implements FileParser
     public double cut;
     public int code;
     public Type type;
-    
-    public Object write ()
-    {
-        return 0;
-    }
-    public boolean read (String content)
-    {
-        return true;
-    }
+
     
     public Voucher (String name, int code, Type type, double minimum, double cut)
     {

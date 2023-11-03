@@ -1,21 +1,12 @@
 package evanditaWiratamaPutraJBusER;
 
 
-public class Account extends Serializable implements FileParser
+public class Account extends Serializable
 {
     public String email;
     public String name;
     public String password;
-    
-    public Object write ()
-    {
-        return 0;
-    }
-    public boolean read (String content)
-    {
-        return true;
-    }
-        
+
     public Account(String name, String email, String password)
     {
         super();

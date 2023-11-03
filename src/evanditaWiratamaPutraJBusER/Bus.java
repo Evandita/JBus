@@ -3,7 +3,7 @@ import java.util.*;
 import java.text.*;
 import java.sql.Timestamp;
 
-public class Bus extends Serializable implements FileParser
+public class Bus extends Serializable
 {
     public int capacity;
     public Facility facility;
@@ -15,15 +15,7 @@ public class Bus extends Serializable implements FileParser
     public City city;
     public List<Schedule> schedules;
     
-    public Object write ()
-    {
-        return 0;
-    }
-    
-    public boolean read (String content)
-    {
-        return true;
-    }
+
     
     public Bus (String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
     {
@@ -48,7 +40,18 @@ public class Bus extends Serializable implements FileParser
     
     public void addSchedule (Timestamp departureDate)
     {
-        schedules.add(new Schedule(departureDate, capacity));
+        try{
+            Predicate<Schedule> s = (val) -> val.departureSchedule.equals(departureDate);
+            if (Algorithm.exists(this.schedules, s)){
+                throw new RuntimeException("Hari Keberangkatan sudah ada");
+            }
+            else {
+                schedules.add(new Schedule(departureDate, capacity));
+            }
+        }
+        catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
     }
     
     /*
