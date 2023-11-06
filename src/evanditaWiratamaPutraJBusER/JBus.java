@@ -12,8 +12,7 @@ import com.google.gson.reflect.TypeToken;
 public class JBus
 {
     public static void main (String[] args)
-            throws ParseException
-    {
+            throws ParseException, InterruptedException {
         /*        
         System.out.println(getBusId());
         System.out.println(getBusName());
@@ -277,7 +276,7 @@ public class JBus
 
          */
 
-
+        /*
         //CS Modul 6
         try{
             String filepath = "C:\\Users\\Evandita\\Documents\\Tugas Kuliah\\Semester 3\\OOP 02\\Praktikum\\Pre CS\\Modul 1\\JBus\\data\\buses_CS.json";
@@ -291,9 +290,40 @@ public class JBus
             Bus b =  createBus();
             b.addSchedule(Timestamp.valueOf("2023-7-18 15:00:00"));
             b.addSchedule(Timestamp.valueOf("2023-7-18 15:00:00"));
-            */
+
         }
         catch (Throwable t){
+            t.printStackTrace();
+        }
+        */
+
+        //PT Modul 6
+        Bus bus = createBus();
+        for (Schedule schedule1 : bus.schedules) {
+            schedule1.printSchedule();
+        }
+        for(int i =0; i < 10; i++){
+            BookingThread thread = new BookingThread("Thread " + i,bus,
+                    Timestamp.valueOf("2023-07-27 19:00:00"));
+        }
+        Thread.sleep(1000);
+        for (Schedule schedule : bus.schedules) {
+            schedule.printSchedule();
+        }
+
+        try {
+
+            String filepath = "C:\\Users\\Evandita\\Documents\\Tugas Kuliah\\Semester 3\\OOP 02\\Praktikum\\Pre CS\\Modul 1\\JBus\\data\\accountDatabase.json";
+            JsonTable<Account> tableAccount = new JsonTable<>(Account.class, filepath);
+
+            Account newAcc = new Account("Dio", "dio@gmail.com", "NgikNgok");
+            tableAccount.add(newAcc);
+
+            JsonTable.writeJson(tableAccount, filepath);
+            tableAccount.forEach(System.out::println);
+        }
+
+        catch (Throwable t) {
             t.printStackTrace();
         }
 
@@ -448,10 +478,17 @@ public class JBus
         return (int)(price * numberOfSeat + getAdminFee(price *numberOfSeat));
     }
 
+
+
     public static Bus createBus() {
         Price price = new Price(750000, 5);
-        Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25, BusType.REGULER, City.BANDUNG, new Station("Depok Terminal", City.DEPOK, "Jl. Margonda Raya"), new Station("Halte UI", City.JAKARTA, "Universitas Indonesia"));
+        Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25,
+                BusType.REGULER, City.BANDUNG, new Station("Depok Terminal", City.DEPOK,
+                "Jl. Margonda Raya"), new Station("Halte UI", City.JAKARTA, "Universitas Indonesia"));
+                Timestamp timestamp = Timestamp.valueOf("2023-07-27 19:00:00");
+        bus.addSchedule(timestamp);
         return bus;
     }
+
 
 }
