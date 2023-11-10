@@ -1,5 +1,6 @@
 package com.evanditaWiratamaPutraJBusER.controller;
 
+import com.evanditaWiratamaPutraJBusER.Predicate;
 import com.evanditaWiratamaPutraJBusER.Renter;
 import com.evanditaWiratamaPutraJBusER.Account;
 import com.evanditaWiratamaPutraJBusER.Algorithm;
@@ -8,8 +9,8 @@ import com.evanditaWiratamaPutraJBusER.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @RestController
@@ -36,8 +37,39 @@ public class AccountController implements BasicGetController<Account>
                     @RequestParam String password
             )
     {
-        Account tmp =  new Account(name, email, password);
-        if (name.isBlank() == false && tmp.validate() && Algorithm.exists(accountTable,tmp)) {
+
+        Predicate<Account> s = (val) -> val.email.equals(email);
+
+        String REGEX_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$";
+        String REGEX_EMAIL = "^[a-zA-Z0-9]+@[a-zA-Z_]+?\\.[a-zA-Z.]+[a-zA-Z]+$";
+        Pattern patternPassword = Pattern.compile(REGEX_PASSWORD);
+        Pattern patternEmail = Pattern.compile(REGEX_EMAIL);
+        Matcher matcherPassword = patternPassword.matcher(password);
+        Matcher matcherEmail = patternEmail.matcher(email);
+
+        if (name.isBlank() == false && matcherPassword.find() && matcherEmail.find() && Algorithm.exists(accountTable,s) == false) {
+            String passwordToHash = password;
+            String generatedPassword = null;
+
+            try
+            {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                md.update(passwordToHash.getBytes());
+
+                byte[] bytes = md.digest();
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0;i < bytes.length;i++) {
+                    sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+                }
+                generatedPassword = sb.toString();
+            }
+            catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            Account tmp =  new Account(name, email, generatedPassword);
+            accountTable.addElement(tmp);
             return new BaseResponse<>(true, "Berhasil register", tmp);
         }
         return new BaseResponse<>(false, "Gagal register", null);
@@ -71,8 +103,9 @@ public class AccountController implements BasicGetController<Account>
         catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
         for (Account i : accountTable) {
-            if (i.password.equals(generatedPassword))
+            if (i.password.equals(generatedPassword) && i.email.equals(email))
                 return new BaseResponse<>(true, "Berhasil login", i);
         }
         return new BaseResponse<>(false, "Gagal register", null);
@@ -84,10 +117,26 @@ public class AccountController implements BasicGetController<Account>
                                          @RequestParam String address,
                                          @RequestParam String phoneNumber)
     {
-        Account renter = new Account(companyName, address, phoneNumber)
-        if (Algorithm.exists(accountTable, renter)) {
-            return new BaseResponse<>(true, "Berhasil login", i);
+        for (Account i : accountTable) {
+            if (i.id == id && i.company == null){
+                i.company = new Renter(companyName, phoneNumber, address);
+                return new BaseResponse<>(true, "Berhasil register renter", i.company);
+            }
         }
+        return new BaseResponse<>(false, "Gagal register renter", null);
+    }
+
+    @PostMapping("/{id}/topUp")
+    BaseResponse<Double> topUp(@PathVariable int id, @RequestParam double amount)
+    {
+        for (Account i : accountTable) {
+            if (i.id == id){
+                if (i.topUp(amount)){
+                    return new BaseResponse<>(true, "Berhasil top up", amount);
+                }
+            }
+        }
+        return new BaseResponse<>(false, "Gagal top up", null);
     }
     /*
     @GetMapping("/{id}")

@@ -12,7 +12,7 @@ public class Account extends Serializable
     public Renter company;
 
     public double balance;
-    public static final String REGEX_PASSWORD = "^( =.*[a-z])( =.*[A-Z])( =.*\\d)[a-zA-Z\\d]{8,}$";;
+    public static final String REGEX_PASSWORD = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$";
     public static final String REGEX_EMAIL = "^[a-zA-Z0-9]+@[a-zA-Z_]+?\\.[a-zA-Z.]+[a-zA-Z]+$";
 
     public Account(String name, String email, String password)
@@ -44,7 +44,11 @@ public class Account extends Serializable
             return true;
         }
         return false;
+    }
 
-
+    public boolean topUp(double amount) {
+        if (amount < 0) return false;
+        balance += amount;
+        return true;
     }
 }

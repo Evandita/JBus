@@ -20,7 +20,7 @@ public interface BasicGetController<T extends Serializable> {
     }
 
     @GetMapping("/{id}")
-    public default T getById(int id) {
+    public default T getById(@PathVariable int id) {
         Predicate<T> s = (val) -> val.id == id;
         return Algorithm.find(getJsonTable(),s);
     }

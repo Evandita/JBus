@@ -1,4 +1,5 @@
 package com.evanditaWiratamaPutraJBusER;
+import com.evanditaWiratamaPutraJBusER.dbjson.JsonDBEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,7 +17,9 @@ public class JBus
 {
     public static void main (String[] args)
             throws ParseException, InterruptedException {
+        JsonDBEngine.Run(JBus.class);
         SpringApplication.run(JBus.class, args);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> JsonDBEngine.join()));
         /*        
         System.out.println(getBusId());
         System.out.println(getBusName());
