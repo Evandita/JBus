@@ -1,7 +1,7 @@
-package com.evanditaWiratamaPutraJBusER;
+package com.evanditaWiratamaPutraJBusER.dbjson;
 import java.util.HashMap;
 
-public class Serializable{
+public class Serializable implements Comparable<Serializable>{
     /**
      * The ID of Serializable object
      */

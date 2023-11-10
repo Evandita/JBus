@@ -1,4 +1,5 @@
 package com.evanditaWiratamaPutraJBusER;
+import com.evanditaWiratamaPutraJBusER.dbjson.Serializable;
 import java.sql.Timestamp;
 
 public class Invoice extends Serializable

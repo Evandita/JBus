@@ -1,5 +1,5 @@
 package com.evanditaWiratamaPutraJBusER;
-
+import com.evanditaWiratamaPutraJBusER.dbjson.Serializable;
 public class Station extends Serializable
 {
 

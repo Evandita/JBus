@@ -1,4 +1,5 @@
 package com.evanditaWiratamaPutraJBusER;
+import com.evanditaWiratamaPutraJBusER.dbjson.Serializable;
 import java.util.*;
 import java.text.*;
 import java.sql.Timestamp;
