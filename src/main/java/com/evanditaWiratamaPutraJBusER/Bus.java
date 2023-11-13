@@ -7,28 +7,28 @@ import java.sql.Timestamp;
 public class Bus extends Serializable
 {
     public int capacity;
-    public Facility facility;
+    public List<Facility> facilities;
     public String name;
     public Price price;
     public Station departure;
     public Station arrival;
     public BusType busType;
-    public City city;
     public List<Schedule> schedules;
-    
+
+    public int accountId;
 
     
-    public Bus (String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
+    public Bus (int accountId, String name, List<Facility> facilities, Price price, int capacity, BusType busType, Station departure, Station arrival)
     {
         super();
+        this.accountId = accountId;
         this.capacity = capacity;
-        this.facility = facility;
+        this.facilities = facilities;
         this.name = name;
         this.price = price;
         this.departure = departure;
         this.arrival = arrival;
         this.busType = busType;
-        this.city = city;
         schedules = new ArrayList<Schedule>();
         
     }
@@ -36,7 +36,7 @@ public class Bus extends Serializable
     
     public String toString ()
     {
-        return "\nClass: Bus\n" + "id: " + id + "\ncapacity: " + capacity + "\nfacility: " + facility + "\nname: " + name + "\nprice: " + price + "\ndeparture: " + departure + "\narrival: " + arrival + "\nbusType: " + busType + "\ncity: " + city;
+        return "\nClass: Bus\n" + "id: " + id + "\ncapacity: " + capacity + "\nfacility: " + facilities + "\nname: " + name + "\nprice: " + price + "\ndeparture: " + departure + "\narrival: " + arrival + "\nbusType: " + busType;
     }
     
     public void addSchedule (Timestamp departureDate)

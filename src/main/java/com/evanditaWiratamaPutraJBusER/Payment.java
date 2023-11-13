@@ -7,24 +7,24 @@ public class Payment extends Invoice
 {
     private int busId;
     public Timestamp departureDate;
-    public String busSeat;
+    public List<String> busSeats;
 
 
-    public Payment (int buyerId, int renterId, int busId, String busSeat, Timestamp departureDate)
+    public Payment (int buyerId, int renterId, int busId, List<String> busSeats, Timestamp departureDate)
     {
         super(buyerId, renterId);
         this.busId = busId;
         this.departureDate = departureDate;
-        this.busSeat = busSeat;
+        this.busSeats = busSeats;
     }
 
 
-    public Payment (Account buyer, Renter renter, int busId, String busSeat, Timestamp departureDate)
+    public Payment (Account buyer, Renter renter, int busId, List<String> busSeats, Timestamp departureDate)
     {
         super(buyer, renter);
         this.busId = busId;
         this.departureDate = departureDate;
-        this.busSeat = busSeat;
+        this.busSeats = busSeats;
     }
     /*
     public String toString ()
@@ -41,7 +41,7 @@ public class Payment extends Invoice
             throws ParseException
     {
         SimpleDateFormat SDFormat = new SimpleDateFormat("'Departure Date:' MMMM dd, yyyy HH:mm:ss");
-        return SDFormat.format(departureDate.getTime()) + "\nPayment Id: " + id + "\nBuyer Id: " + buyerId +  "\nRenter Id: " + renterId + "\nBus Id: " + busId + "\nBus Seat: " + busSeat;
+        return SDFormat.format(departureDate.getTime()) + "\nPayment Id: " + id + "\nBuyer Id: " + buyerId +  "\nRenter Id: " + renterId + "\nBus Id: " + busId + "\nBus Seat: " + busSeats;
     }
 
     public String getTime ()
