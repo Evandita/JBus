@@ -54,6 +54,7 @@ public class BusController implements BasicGetController<Bus> {
         return new BaseResponse<>(false, "Gagal create", null);
     }
 
+
     @PostMapping("/addSchedule")
     public BaseResponse<Bus> addSchedule(
             @RequestParam int busId,
