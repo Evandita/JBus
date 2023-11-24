@@ -108,7 +108,7 @@ public class AccountController implements BasicGetController<Account>
             if (i.password.equals(generatedPassword) && i.email.equals(email))
                 return new BaseResponse<>(true, "Berhasil login", i);
         }
-        return new BaseResponse<>(false, "Gagal register", null);
+        return new BaseResponse<>(false, "Gagal Login", null);
     }
 
     @PostMapping ("/{id}/registerRenter")
@@ -127,12 +127,12 @@ public class AccountController implements BasicGetController<Account>
     }
 
     @PostMapping("/{id}/topUp")
-    BaseResponse<Double> topUp(@PathVariable int id, @RequestParam double amount)
+    BaseResponse<Account> topUp(@PathVariable int id, @RequestParam double amount)
     {
         for (Account i : accountTable) {
             if (i.id == id){
                 if (i.topUp(amount)){
-                    return new BaseResponse<>(true, "Berhasil top up", amount);
+                    return new BaseResponse<>(true, "Berhasil top up", i);
                 }
             }
         }
