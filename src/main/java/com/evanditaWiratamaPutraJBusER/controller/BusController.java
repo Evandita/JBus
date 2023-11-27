@@ -81,4 +81,13 @@ public class BusController implements BasicGetController<Bus> {
         }
         return new BaseResponse<>(false, "Gagal addSchedule", null);
     }
+
+    @GetMapping("/getMyBus")
+    public BaseResponse<List<Bus>> getMyBus(@RequestParam int accountId) {
+        List<Bus> bus = Algorithm.<Bus>collect(getJsonTable(), b->b.accountId==accountId);
+        if (bus != null) {
+            return new BaseResponse<>(true, "Berhasil getMyBus", bus);
+        }
+        return new BaseResponse<>(false, "Gagal getMyBus", null);
+    }
 }

@@ -7,6 +7,8 @@ import com.evanditaWiratamaPutraJBusER.dbjson.JsonAutowired;
 import com.evanditaWiratamaPutraJBusER.dbjson.JsonTable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/station")
 public class StationController implements BasicGetController<Station> {
@@ -49,5 +51,7 @@ public class StationController implements BasicGetController<Station> {
             return new BaseResponse<>(false, "An error occurred while adding the station", null);
         }
     }
+    @GetMapping("/getAll")
+    public BaseResponse<List<Station>> getAllStation() {return new BaseResponse<>(true, "Station added successfully", getJsonTable());}
 
 }
