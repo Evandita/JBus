@@ -4,20 +4,66 @@ import java.util.*;
 import java.text.*;
 import java.sql.Timestamp;
 
+/**
+ * Kelas Bus merepresentasikan informasi tentang sebuah bus dalam sistem transportasi.
+ * Setiap objek Bus memiliki kapasitas penumpang, fasilitas, nama, harga, stasiun keberangkatan,
+ * stasiun kedatangan, jenis bus, dan daftar jadwal keberangkatan.
+ *
+ * @author Evandita
+ */
 public class Bus extends Serializable
 {
+    /**
+     * Kapasitas penumpang bus.
+     */
     public int capacity;
+    /**
+     * Daftar fasilitas yang tersedia di dalam bus.
+     */
     public List<Facility> facilities;
+    /**
+     * Nama bus.
+     */
     public String name;
+    /**
+     * Informasi harga tiket bus.
+     */
     public Price price;
+    /**
+     * Stasiun keberangkatan bus.
+     */
     public Station departure;
+    /**
+     * Stasiun kedatangan bus.
+     */
     public Station arrival;
+    /**
+     * Jenis bus (BusType).
+     */
     public BusType busType;
+    /**
+     * Daftar jadwal keberangkatan bus.
+     */
     public List<Schedule> schedules;
-
+    /**
+     * ID akun pemilik bus.
+     */
     public int accountId;
 
-    
+
+    /**
+     * Membangun objek Bus dengan ID akun, nama, fasilitas, harga, kapasitas, jenis bus, stasiun keberangkatan,
+     * dan stasiun kedatangan yang ditentukan.
+     *
+     * @param accountId  ID akun pemilik bus.
+     * @param name       Nama bus.
+     * @param facilities Daftar fasilitas yang tersedia di dalam bus.
+     * @param price      Informasi harga tiket bus.
+     * @param capacity   Kapasitas penumpang bus.
+     * @param busType    Jenis bus (BusType).
+     * @param departure  Stasiun keberangkatan bus.
+     * @param arrival    Stasiun kedatangan bus.
+     */
     public Bus (int accountId, String name, List<Facility> facilities, Price price, int capacity, BusType busType, Station departure, Station arrival)
     {
         super();
@@ -33,12 +79,22 @@ public class Bus extends Serializable
         
     }
 
-    
+
+    /**
+     * Representasi string dari objek Bus.
+     *
+     * @return String yang merepresentasikan objek Bus.
+     */
     public String toString ()
     {
         return "\nClass: Bus\n" + "id: " + id + "\ncapacity: " + capacity + "\nfacility: " + facilities + "\nname: " + name + "\nprice: " + price + "\ndeparture: " + departure + "\narrival: " + arrival + "\nbusType: " + busType;
     }
-    
+
+    /**
+     * Menambahkan jadwal keberangkatan baru ke dalam daftar jadwal bus.
+     *
+     * @param departureDate Waktu keberangkatan baru.
+     */
     public void addSchedule (Timestamp departureDate)
     {
         try{
@@ -54,29 +110,5 @@ public class Bus extends Serializable
             System.err.println(e.getMessage());
         }
     }
-    
-    /*
-    public void printSchedule (Schedule schedule)
-        throws ParseException
-    {
-        SimpleDateFormat SDFormat = new SimpleDateFormat("'Tanggal Keberangkatan:' MMMM dd, yyyy HH:mm:ss");
-        System.out.println(SDFormat.format(schedule.departureSchedule.getTime()));
-        System.out.println("Tanggal keberangkatan dana ketersediaan kursinya: ");
-        int cnt = 0;
-        for (Map.Entry<String, Boolean> seat: schedule.seatAvailability.entrySet())
-        {
-            if (cnt == 4)
-            {
-                cnt = 0;
-                System.out.print("\n");
-            }
-            String key = seat.getKey();
-            Boolean value = seat.getValue();
-            System.out.print(key + ":" + value + "\t");
-            cnt++;
-        }
-        System.out.print("\n");
-    }
-    */
 
 }

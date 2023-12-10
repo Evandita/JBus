@@ -12,7 +12,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Controller untuk menangani operasi terkait akun pengguna.
+ * Menyediakan endpoint untuk registrasi pengguna, login, registrasi renter,
+ * dan penambahan saldo akun.
+ *
+ * @author Evandita
+ */
 @RestController
 @RequestMapping("/account")
 public class AccountController implements BasicGetController<Account>
@@ -22,13 +28,32 @@ public class AccountController implements BasicGetController<Account>
     }
     @JsonAutowired(value = Account.class, filepath = "C:\\Users\\Evandita\\Documents\\Tugas Kuliah\\Semester 3\\OOP 02\\Praktikum\\Pre CS\\Modul 1\\JBus\\src\\main\\java\\com\\evanditaWiratamaPutraJBusER\\json\\account_db.json")
     public static JsonTable<Account> accountTable;
+
+    /**
+     * Mendapatkan instance JsonTable yang terkait dengan kelas Account.
+     *
+     * @return Instance JsonTable<Account>
+     */
     public JsonTable<Account> getJsonTable() {
         return accountTable;
     }
 
+    /**
+     * Endpoint default untuk halaman akun.
+     *
+     * @return String yang menunjukkan halaman akun
+     */
     @GetMapping
     String index() { return "account page"; }
 
+    /**
+     * Endpoint untuk registrasi pengguna.
+     *
+     * @param name     Nama pengguna
+     * @param email    Alamat email pengguna
+     * @param password Kata sandi pengguna
+     * @return BaseResponse dengan status keberhasilan dan objek Account yang terdaftar
+     */
     @PostMapping("/register")
     BaseResponse<Account> register
             (
@@ -76,6 +101,13 @@ public class AccountController implements BasicGetController<Account>
 
     }
 
+    /**
+     * Endpoint untuk login pengguna.
+     *
+     * @param email    Alamat email pengguna
+     * @param password Kata sandi pengguna
+     * @return BaseResponse dengan status keberhasilan dan objek Account yang masuk
+     */
     @PostMapping("/login")
     BaseResponse<Account> login (@RequestParam String email,
                                  @RequestParam String password) {
@@ -111,6 +143,15 @@ public class AccountController implements BasicGetController<Account>
         return new BaseResponse<>(false, "Gagal Login", null);
     }
 
+    /**
+     * Endpoint untuk registrasi akun renter.
+     *
+     * @param id           ID akun pengguna
+     * @param companyName  Nama perusahaan renter
+     * @param address      Alamat renter
+     * @param phoneNumber  Nomor telepon renter
+     * @return BaseResponse dengan status keberhasilan dan objek Renter yang terdaftar
+     */
     @PostMapping ("/{id}/registerRenter")
     BaseResponse<Renter> registerRenter (@PathVariable int id,
                                          @RequestParam String companyName,
@@ -126,6 +167,13 @@ public class AccountController implements BasicGetController<Account>
         return new BaseResponse<>(false, "Gagal register renter", null);
     }
 
+    /**
+     * Endpoint untuk menambahkan saldo akun pengguna.
+     *
+     * @param id     ID akun pengguna
+     * @param amount Jumlah yang akan ditambahkan
+     * @return BaseResponse dengan status keberhasilan dan objek Account yang diperbarui
+     */
     @PostMapping("/{id}/topUp")
     BaseResponse<Account> topUp(@PathVariable int id, @RequestParam double amount)
     {
@@ -138,9 +186,5 @@ public class AccountController implements BasicGetController<Account>
         }
         return new BaseResponse<>(false, "Gagal top up", null);
     }
-    /*
-    @GetMapping("/{id}")
-    String getById(@PathVariable int id) { return "account id " + id + " not found!"; }
 
-     */
 }

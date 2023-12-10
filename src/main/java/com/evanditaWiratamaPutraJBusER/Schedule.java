@@ -3,18 +3,41 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.text.*;
 
+/**
+ * Kelas {@code Schedule} merepresentasikan jadwal keberangkatan suatu transportasi,
+ * termasuk informasi seperti waktu keberangkatan dan ketersediaan kursi.
+ * @author Evandita
+ */
 public class Schedule
 {
 
+    /**
+     * Timestamp yang menunjukkan waktu keberangkatan.
+     */
     public Timestamp departureSchedule;
+    /**
+     * Map yang menyimpan informasi ketersediaan kursi dengan format "ERxx" (nomor kursi).
+     * Jika nilai true, kursi tersedia; jika false, kursi sudah dipesan.
+     */
     public Map<String, Boolean> seatAvailability = new LinkedHashMap<>();
 
+    /**
+     * Membangun instance {@code Schedule} dengan parameter yang telah ditentukan.
+     *
+     * @param departureSchedule Timestamp yang menunjukkan waktu keberangkatan.
+     * @param numberOfSeats     Jumlah kursi yang tersedia.
+     */
     public Schedule (Timestamp departureSchedule, int numberOfSeats)
     {
         this.departureSchedule = departureSchedule;
         initializeSeatAvailability(numberOfSeats);
     }
 
+    /**
+     * Menginisialisasi ketersediaan kursi berdasarkan jumlah kursi yang tersedia.
+     *
+     * @param numberOfSeats Jumlah kursi yang tersedia.
+     */
     private void initializeSeatAvailability (int numberOfSeats)
     {
         for (int seatNumber = 1; seatNumber <= numberOfSeats; seatNumber++)
@@ -24,6 +47,12 @@ public class Schedule
         }
     }
 
+    /**
+     * Memeriksa apakah kursi tertentu tersedia.
+     *
+     * @param seat Nomor kursi yang akan diperiksa.
+     * @return {@code true} jika kursi tersedia, {@code false} jika sudah dipesan atau tidak valid.
+     */
     public boolean isSeatAvailable (String seat)
     {
 
@@ -37,6 +66,12 @@ public class Schedule
         }
     }
 
+    /**
+     * Memeriksa apakah setiap kursi dalam daftar tertentu tersedia.
+     *
+     * @param seat Daftar nomor kursi yang akan diperiksa.
+     * @return {@code true} jika semua kursi tersedia, {@code false} jika ada yang sudah dipesan atau tidak valid.
+     */
     public boolean isSeatAvailable (List<String> seat)
     {
         boolean ret = false;
@@ -53,11 +88,43 @@ public class Schedule
         return ret;
     }
 
+    /**
+     * Memeriksa apakah setiap kursi dalam daftar tertentu tidak tersedia.
+     *
+     * @param seat Daftar nomor kursi yang akan diperiksa.
+     * @return {@code true} jika setidaknya satu kursi tidak tersedia, {@code false} jika semua kursi tersedia atau tidak valid.
+     */
+    public boolean isSeatNotAvailable (List<String> seat)
+    {
+        boolean ret = false;
+        for (String element: seat){
+            if (seatAvailability.containsKey(element) && seatAvailability.get(element) == false)
+            {
+                ret = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Memesan kursi tertentu.
+     *
+     * @param seat Nomor kursi yang akan dipesan.
+     */
     public void bookSeat (String seat)
     {
         seatAvailability.put(seat, false);
     }
 
+    /**
+     * Memesan setiap kursi dalam daftar tertentu.
+     *
+     * @param seat Daftar nomor kursi yang akan dipesan.
+     */
     public void bookSeat (List<String> seat)
     {
         for (String element: seat) {
@@ -65,6 +132,23 @@ public class Schedule
         }
     }
 
+    /**
+     * Membatalkan pemesanan setiap kursi dalam daftar tertentu.
+     *
+     * @param seat Daftar nomor kursi yang akan dibatalkan pemesanannya.
+     */
+    public void unBookSeat (List<String> seat)
+    {
+        for (String element: seat) {
+            seatAvailability.put(element, true);
+        }
+    }
+
+    /**
+     * Mencetak jadwal keberangkatan dan ketersediaan kursi ke konsol.
+     *
+     * @throws ParseException Jika terdapat kesalahan saat melakukan parsing waktu.
+     */
     public void printSchedule ()
             throws ParseException
     {
@@ -93,6 +177,12 @@ public class Schedule
         System.out.println("\n");
     }
 
+    /**
+     * Menghasilkan representasi string dari objek {@code Schedule},
+     * termasuk informasi waktu keberangkatan dan jumlah kursi yang terisi.
+     *
+     * @return Representasi string dari objek {@code Schedule}.
+     */
     @Override
     public String toString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
